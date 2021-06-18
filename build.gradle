@@ -28,6 +28,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.mockito:mockito-core:3.11.1'
 	
 	//The dependecy below is due to QuerydslPredicateExecutor
 	compileOnly "com.querydsl:querydsl-jpa:4.4.0"

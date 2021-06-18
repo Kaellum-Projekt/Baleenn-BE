@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 @Data
 @RequiredArgsConstructor
 @Log4j2
-class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService{
 	
 	private final ClientRepository clientRepository;
 	@Qualifier("ClientModelMapper") private final ModelMapper modelMapper;
