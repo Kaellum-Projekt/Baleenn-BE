@@ -11,5 +11,7 @@ public interface ClientRepository extends
 								JpaRepository<Client, Long>, 
 								//QuerydslPredicateExecutor<Client>, 
 								JpaSpecificationExecutor<Client>{
+	
+	public Client findClientByFirstName(String firstname);
 
 }

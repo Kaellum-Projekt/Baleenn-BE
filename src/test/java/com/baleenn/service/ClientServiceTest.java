@@ -1,6 +1,10 @@
 package com.baleenn.service;
 
+import static org.hamcrest.CoreMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +22,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.baleenn.domain.models.Client;
 import com.baleenn.domain.repositories.ClientRepository;
+import com.baleenn.dto.request.ClientRequestDto;
+import com.baleenn.dto.response.ClientResponseDto;
 import com.baleenn.service.implementations.ClientServiceImpl;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.lenient;
 
 /**
  * @author: rapha
@@ -32,11 +43,16 @@ import com.baleenn.service.implementations.ClientServiceImpl;
 public class ClientServiceTest {
 	
 	private ModelMapper modelMapper;
-	@SuppressWarnings("unused")
 	private ClientService clientService;
 	
 	@Mock
 	private ClientRepository clientRepository;
+	
+	private final Long ID = 10L;
+	private final String FIRSTNAME = "FIRST_NAME";
+	private final String LASTNAME = "LAST_NAME";
+	private final String  CELLPHONE = "1234567890";
+	private final LocalDate DOB = LocalDate.of(1999, 1, 2);
 	
 	@Autowired
 	ClientServiceTest(@Qualifier("ClientModelMapper") ModelMapper modelMapper) {
@@ -46,13 +62,58 @@ public class ClientServiceTest {
 	@BeforeEach
     void setup() {
         this.clientService = new ClientServiceImpl(clientRepository, modelMapper);
+        lenient().when(clientRepository.save(any())).thenReturn( generateClientEntity());
     }
 	
-	@Test
-	@DisplayName("Not a valid test, this is just to verify if junit + mockit are working fine")
-	void mockTest() {
+	private ClientRequestDto generateClientObject() {
+		ClientRequestDto clientRequestDto = new ClientRequestDto();
+		clientRequestDto.setFirstName(FIRSTNAME);
+		clientRequestDto.setLastName(LASTNAME);
+		clientRequestDto.setCellphone(CELLPHONE);
+		clientRequestDto.setDob(DOB);
 		
-		assertTrue(true);
+		return clientRequestDto;
+	}
+	
+	private Client generateClientEntity() {
+		Client client = new Client();
+		client.setId(ID);
+		client.setFirstName(FIRSTNAME);
+		client.setLastName(LASTNAME);
+		client.setCellphone(CELLPHONE);
+		client.setDob(DOB);
+		
+		return client;
+	}
+	
+	@Test
+	@DisplayName("Verifies if the modelMapper maps the object ClientRequestDto to Client")
+	void testMapper() {
+		
+		Client client = new Client();
+		ClientRequestDto clientRequestDto = generateClientObject();
+ 		
+		client = modelMapper.map(clientRequestDto, Client.class);
+		
+		assertEquals(FIRSTNAME, client.getFirstName());
+		assertEquals(LASTNAME, client.getLastName());
+		assertEquals(CELLPHONE, client.getCellphone());
+		assertEquals(DOB, client.getDob());
+		
+	}
+	
+	@Test
+	@DisplayName("Testing the saving functionality")
+	void testSave() {
+		ClientRequestDto clientRequestDto = generateClientObject();
+		
+		ClientResponseDto client = clientService.saveClient(clientRequestDto);
+		
+		assertEquals(ID, client.getId());
+		assertEquals(FIRSTNAME, client.getFirstName());
+		assertEquals(LASTNAME, client.getLastName());
+		assertEquals(CELLPHONE, client.getCellphone());
+		assertEquals(DOB, client.getDob());
 		
 	}
 

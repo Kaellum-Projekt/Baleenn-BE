@@ -4,6 +4,8 @@ package com.baleenn.dto.request;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +16,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ClientRequestDto {
-    private String firstName;
+    @JsonIgnore
+	private Long id;
+	private String firstName;
     private String middleName;
     private String lastName;
     private boolean hasHadDiffName;

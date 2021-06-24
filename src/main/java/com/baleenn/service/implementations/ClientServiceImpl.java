@@ -50,7 +50,7 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public ClientResponseDto getClientById(Long clientId) {
-		// TODO Auto-generated method stub
+		clientRepository.findClientByFirstName("John");
 		return null;
 	}
 
