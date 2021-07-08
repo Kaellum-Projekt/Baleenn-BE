@@ -6,16 +6,11 @@ package com.baleenn.domain.models;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -23,234 +18,136 @@ import lombok.NoArgsConstructor;
  *
  */
 @Entity
-@Table(name="client")
+@Table
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-public class Client {
+public class Client extends Audit<Long> {
      @Id
-     @SequenceGenerator(
-             name = "client_sequence",
-             sequenceName = "client_sequence",
-             allocationSize = 1
-     )
-     @GeneratedValue(
-             strategy = SEQUENCE,
-             generator = "client_sequence"
-     )
-     @Column(
-             name = "id",
-             updatable = false
-     ) 
+     @SequenceGenerator(name = "client_sequence", sequenceName = "client_sequence",allocationSize = 1)
+     @GeneratedValue(strategy = SEQUENCE, generator = "client_sequence")
+     @Column(updatable = false) 
 	 private Long id;
-     @Column(
-             name = "first_name",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String firstName;
-     @Column(
-             name = "middle_name",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String middleName;
-     @Column(
-             name = "last_name",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String lastName;
-     @Column(
-             name = "has_had_diff_name",
-             nullable = false,
-             columnDefinition = "boolean default false"
-     )
+
+     @Column(nullable = false, columnDefinition = "boolean default false")
      private boolean hasHadDiffName;
-     @Column(
-             name = "another_used_name",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String anotherUsedName;
-     @Column(
-             name = "full_address",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String fullAddress;
-     @Column(
-             name = "email_address",
-             nullable = false,
-             unique = true
-     )
-     private String email_address;
-     @Column(
-             name = "dob",
-             nullable = false
-     )
+     
+     @Column(nullable = false, unique = true)
+     private String emailAddress;
+     
+     @Column(nullable = false)
      private LocalDate dob;  
-     @Column(
-             name = "profession_id",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private int professionId;
-     @Column(
-             name = "marital_code",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private int maritalCode;
-     @Column(
-             name = "client_type",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private int clientType;
-     @Column(
-             name = "status_id",
-             nullable = false
-     )
+     
+     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+     @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
+                 nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+     private SpouseInformation spouseInformation;
+     
+     @Column(nullable = false)
      private int statusId;
-     @Column(
-             name = "landline",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String landline;
-     @Column(
-             name = "cellphone",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String cellphone;
 	 
-     @Column(
-             name = "workphone",
-             nullable = true
-     )
+     @Column(nullable = true)
      private String workphone;
-     @Column(
-             name = "citzenships",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String citzenships;
-     @Column(
-             name = "country_residence",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String countryResidence;
-     @Column(
-             name = "country_birth",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String countryBirth;
-     @Column(
-             name = "city_of_birth",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String cityOfBirth;
-     @Column(
-             name = "eye_colour",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String eyeColour;
-     @Column(
-             name = "height_in_cm",
-             nullable = false
-     )
+    
+     @Column(nullable = false)
      private int heightInCm;
-     @Column(
-             name = "ever_applied_canadian_visa",
-             nullable = false
-     )
+
+     @Column(nullable = false)
      private boolean everAppliedCanadianVisa;
-     @Column(
-             name = "date_first_entry",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private LocalDate dateFirstEntry;
-     @Column(
-             name = "city_of_entry",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String cityOfEntry;
-     @Column(
-             name = "canadian_cic_program",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String canadianCicProgram;
-     @Column(
-             name = "date_last_entry",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private LocalDate dateLastEntry;
-     @Column(
-             name = "city_last_entry",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String cityLastEntry;
-     @Column(
-             name = "lived_in_another_country",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String LivedInAnotherCountry;
-     @Column(
-             name = "countries_lived_in",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String countriesLivedIn;
-     @Column(
-             name = "has_ever_had_visa_denied",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private boolean hasEverHadVisaDenied;
-     @Column(
-             name = "denied_visa_countries",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String deniedVisaCountries;
-     @Column(
-             name = "denied_visa_countries_reason",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private String deniedVisaCountriesReason;
-     @Column(
-             name = "has_ever_had_leave_country",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private boolean hasEverHadLeaveCountry;
-     @Column(
-             name = "requested_countries",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String requestedCountries;
-     @Column(
-             name = "requested_countries_reason",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String requestedCountriesReason;
-     @Column(
-             name = "relative_permanent_in_canada",
-             nullable = false
-     )
+     
+     @Column(nullable = false)
      private boolean relativePermanentInCanada;
-     @Column(
-             name = "statutory_question",
-             nullable = true
-     )
+     
+     @Column(nullable = true)
      private String statutoryQuestion;
-     @Column(
-             name = "created_by",
-             nullable = false
-     )
-	 private String createdBy;
-     @Column(
-             name = "date_created",
-             nullable = false,
-             columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
-      )
-	 private LocalDateTime dateCreated;
-     @Column(
-             name = "last_updated_by",
-             nullable = false
-     )
-     private String lastUpdatedBy;
-     @Column(
-             name = "lastUpdatedDate",
-             nullable = false,
-             columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
-      )
-	 private LocalDateTime lastUpdatedDate;
+     
+ 	@Override
+ 	public boolean isNew() {
+         return this.getId() == null;
+     }
 
 }
