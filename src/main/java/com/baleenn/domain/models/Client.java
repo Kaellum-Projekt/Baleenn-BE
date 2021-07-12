@@ -6,8 +6,10 @@ package com.baleenn.domain.models;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,17 +46,23 @@ public class Client extends Audit<Long> {
      @Column(nullable = true)
      private String anotherUsedName;
      
-     @Column(nullable = false)
-     private String fullAddress;
+     @OneToMany
+     @JoinColumn(referencedColumnName = "id", unique=false, updatable = true, insertable = true, nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+ 	 private Set<Address> address;
      
      @Column(nullable = false, unique = true)
+ 	 @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+	        +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+	        +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+	             message="Invalid email address format")
      private String emailAddress;
      
      @Column(nullable = false)
      private LocalDate dob;  
      
-     @Column(nullable = false)
-     private int professionId;
+     @ManyToOne(fetch = FetchType.EAGER, optional = true)
+     @JoinColumn(referencedColumnName = "id", unique=false, updatable = false, insertable = false, nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+     private Profession profession;
      
      @Column(nullable = false)
      private int maritalCode;
@@ -66,6 +74,12 @@ public class Client extends Audit<Long> {
      @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
                  nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
      private SpouseInformation spouseInformation;
+     
+     @OneToMany(mappedBy="client")
+     private Set<FamilyInformation> familyInformation;
+     
+     @OneToMany(mappedBy="client")
+     private Set<Process> process;
      
      @Column(nullable = false)
      private int statusId;
