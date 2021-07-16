@@ -8,7 +8,19 @@ import static javax.persistence.GenerationType.SEQUENCE;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 import lombok.Data;
@@ -25,6 +37,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 public class Client extends Audit<Long> {
+	
+
      @Id
      @SequenceGenerator(name = "client_sequence", sequenceName = "client_sequence",allocationSize = 1)
      @GeneratedValue(strategy = SEQUENCE, generator = "client_sequence")
@@ -47,21 +61,19 @@ public class Client extends Audit<Long> {
      private String anotherUsedName;
      
      @OneToMany
-     @JoinColumn(referencedColumnName = "id", unique=false, updatable = true, insertable = true, nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+     @JoinColumn(referencedColumnName = "id", unique=false, updatable = true, insertable = true, nullable = true, foreignKey = @ForeignKey(name="FK_client_address"))
  	 private Set<Address> address;
      
      @Column(nullable = false, unique = true)
- 	 @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-	        +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-	        +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-	             message="Invalid email address format")
+ 	 @Pattern(regexp="${email.regex}" ,
+	             message="${email.invalid.msg}")
      private String emailAddress;
      
      @Column(nullable = false)
      private LocalDate dob;  
      
      @ManyToOne(fetch = FetchType.EAGER, optional = true)
-     @JoinColumn(referencedColumnName = "id", unique=false, updatable = false, insertable = false, nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+     @JoinColumn(referencedColumnName = "id", unique=false, updatable = false, insertable = false, nullable = false, foreignKey = @ForeignKey(name="FK_client_profession"))
      private Profession profession;
      
      @Column(nullable = false)
@@ -72,7 +84,7 @@ public class Client extends Audit<Long> {
      
      @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
      @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
-                 nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+                 nullable=true, foreignKey = @ForeignKey(name="FK_client_spouse_information"))
      private SpouseInformation spouseInformation;
      
      @OneToMany(mappedBy="client")

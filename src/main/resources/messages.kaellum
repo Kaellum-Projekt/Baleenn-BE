@@ -1,0 +1,4 @@
+email.regex=[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
+email.invalid.msg=Invalid email address format
+
+test.simple.msg="The app is up and running correctly" 
