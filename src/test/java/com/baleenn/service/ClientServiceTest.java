@@ -1,8 +1,8 @@
 package com.baleenn.service;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,6 @@ import com.baleenn.domain.repositories.ClientRepository;
 import com.baleenn.dto.request.ClientRequestDto;
 import com.baleenn.dto.response.ClientResponseDto;
 import com.baleenn.service.implementations.ClientServiceImpl;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.lenient;
 
 /**
  * @author: rapha

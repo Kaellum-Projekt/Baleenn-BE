@@ -1,22 +1,12 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
-    }
-}
-
 plugins {
 	id 'org.springframework.boot' version '2.5.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'base'
 }
-apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'com.baleenn'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT' 
 sourceCompatibility = '11'
 
 configurations {
@@ -26,24 +16,24 @@ configurations {
 }
 
 jar {
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',  
-        	'Implementation-Version': version,
-        	'Main-Class': 'com.baleenn.BaleennApplication'
-    }
+   enabled = false
+   archivesBaseName = 'baleenn-app'
 }
 
 //create a single Jar with all dependencies
-task fatJar(type: Jar) {
+/*task fatJar(type: Jar) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes 'Implementation-Title': 'Gradle Jar File Example',  
-        	'Implementation-Version': version,
+        	'Implementation-Version': archiveVersion,
         	'Main-Class': 'com.baleenn.BaleennApplication'
     }
-    baseName = 'baleenn-app'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    archiveBaseName = 'baleenn-app'
+    from { 
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
     with jar
-}
+}*/
 repositories {
 	mavenCentral()
 }
