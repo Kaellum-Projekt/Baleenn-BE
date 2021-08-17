@@ -37,7 +37,7 @@ public class Work extends Audit<Long>{
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "id", unique = false, updatable = true, insertable = true, 
-    nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    nullable = true, foreignKey = @ForeignKey(name="FK_work_client"))
 	private Client client;
 	
 	@Column(nullable = false)
@@ -49,12 +49,15 @@ public class Work extends Audit<Long>{
 	@Column(nullable = false)
 	private String companyName;
 	
+	@Column(nullable = false)
+	private String jobTitle;
+	
 	@Column(nullable = true)
 	private String website;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
-                nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+                nullable=true, foreignKey = @ForeignKey(name="FK_work_address"))
 	private Address address;
 	
 	@Column(nullable = false)

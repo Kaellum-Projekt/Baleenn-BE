@@ -2,6 +2,8 @@ package com.baleenn.domain.models;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
@@ -12,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -43,11 +47,22 @@ public class Process extends Audit<Long>{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "id", unique = false, updatable = true, insertable = true, 
-    nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    nullable=true, foreignKey = @ForeignKey(name="FK_process_client"))
 	private Client client;
 	
 	@Column(nullable = true)
 	private String finalized;
+	
+	@Column(nullable = true)
+	private String description;
+	
+    @OneToMany(mappedBy="process")
+    private Set<Documents> documents;
+    
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
+    nullable=true, foreignKey = @ForeignKey(name="FK_process_user_baleenn_processes"))
+    private UserBaleennProcesses userBaleennProcesses;
 
 	@Override
 	public boolean isNew() {

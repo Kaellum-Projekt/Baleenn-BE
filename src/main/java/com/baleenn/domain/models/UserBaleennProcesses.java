@@ -36,12 +36,10 @@ public class UserBaleennProcesses extends Audit<Long>{
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
-    nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    nullable=true, foreignKey = @ForeignKey(name="FK_user_baleenn_processes_user_baleenn"))
 	private UserBaleenn userBaleenn;
 	
-	@OneToMany
-	@JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
-    nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@OneToMany(mappedBy="userBaleennProcesses")
 	private Set<Process> processes;
 	
 	@Override

@@ -36,7 +36,7 @@ public class Education extends Audit<Long>{
 	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "id", unique = false, updatable = true, insertable = true, 
-    nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    nullable = true, foreignKey = @ForeignKey(name="FK_education_client"))
 	private Client client;
 	
 	@Column(nullable = false)

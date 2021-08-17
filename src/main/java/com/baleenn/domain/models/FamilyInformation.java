@@ -45,7 +45,7 @@ public class FamilyInformation extends Audit<Long>{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(referencedColumnName = "id", unique = false, updatable = true, insertable = true, 
-    nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    nullable=true, foreignKey = @ForeignKey(name="FK_family_information_client"))
 	private Client client; 
 	
 	@Column(nullable = false)
@@ -57,8 +57,7 @@ public class FamilyInformation extends Audit<Long>{
 	@Column(nullable = true)
 	private String middleName;
 	
-	@OneToMany
-    @JoinColumn(referencedColumnName = "id", unique=false, updatable = true, insertable = true, nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@OneToMany(mappedBy = "familyInformation")
 	private Set<Address> address;
 	
 	@Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."

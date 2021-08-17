@@ -21,6 +21,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Index;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 import lombok.Data;
@@ -32,7 +35,11 @@ import lombok.NoArgsConstructor;
  *
  */
 @Entity
-@Table
+@Table (indexes = {
+		@Index(name = "nameIndex", columnList = "firstName, lastName"),
+		@Index(name = "fnameIndex", columnList = "firstName"),
+		@Index(name = "lnameIndex", columnList = "lastName")
+})
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
@@ -60,8 +67,7 @@ public class Client extends Audit<Long> {
      @Column(nullable = true)
      private String anotherUsedName;
      
-     @OneToMany
-     @JoinColumn(referencedColumnName = "id", unique=false, updatable = true, insertable = true, nullable = true, foreignKey = @ForeignKey(name="FK_client_address"))
+ 	 @OneToMany(mappedBy = "client")
  	 private Set<Address> address;
      
      @Column(nullable = false, unique = true)
@@ -77,6 +83,7 @@ public class Client extends Audit<Long> {
      private Profession profession;
      
      @Column(nullable = false)
+     @Min(1) @Max(6)
      private int maritalCode;
      
      @Column(nullable = false)
@@ -94,6 +101,7 @@ public class Client extends Audit<Long> {
      private Set<Process> process;
      
      @Column(nullable = false)
+     @Min(0) @Max(1)
      private int statusId;
      
      @Column(nullable = true)
@@ -142,7 +150,7 @@ public class Client extends Audit<Long> {
      private String cityLastEntry;
      
      @Column(nullable = true)
-     private String LivedInAnotherCountry;
+     private boolean LivedInAnotherCountry;
      
      @Column(nullable = true)
      private String countriesLivedIn;

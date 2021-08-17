@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -49,6 +50,10 @@ public class UserBaleenn extends Audit<Long> {
 	
 	@Column(nullable = false)
 	private String password;
+	
+	@OneToOne(mappedBy = "userBaleenn")
+	private UserBaleennProcesses userBaleennProcesses;
+	
 
 	@Override
 	public boolean isNew() {

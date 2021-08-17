@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -11,7 +12,11 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,13 +37,14 @@ public class Role extends Audit<Long> {
 	private Long id;
 	
 	@Column(nullable = false)
-	private String name;
+	private String name;	
 	
-	
-	@OneToMany
-	@JoinColumn(referencedColumnName = "id", unique = false, updatable = false, insertable = false, 
-    nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Set<Permission> permissions;
+	@ManyToMany
+	@JoinTable(
+	  name = "role_permission", 
+	  joinColumns = @JoinColumn(name = "role_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	Set<Permission> permissions;
 
 	@Override
 	public boolean isNew() {

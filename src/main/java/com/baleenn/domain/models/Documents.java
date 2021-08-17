@@ -36,9 +36,12 @@ public class Documents extends Audit<Long> {
 	@Column(nullable = false)
 	private String fileName;
 	
+	@Column(nullable = false)
+	private String path;
+	
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
-                nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+                nullable=true, foreignKey = @ForeignKey(name="FK_documents_process"))
 	private Process process;
 	
 
