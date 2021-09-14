@@ -24,7 +24,7 @@ public class ClientRequestDto {
     private boolean hasHadDiffName;
     private String anotherUsedName;
     private String fullAddress;
-    private String email_address;
+    private String emailAddress;
     private LocalDate dob;  
     private int professionId;
     private int maritalCode;

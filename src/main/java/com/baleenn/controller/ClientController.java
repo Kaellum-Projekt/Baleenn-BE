@@ -1,5 +1,7 @@
 package com.baleenn.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,9 @@ public class ClientController {
 	
 	private final ClientService clientService;
 	
+	@Autowired
+	private Environment env;
+	
 	@RequestMapping(method = {RequestMethod.POST})
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -40,7 +45,7 @@ public class ClientController {
     @ResponseBody
     public String test ()  {
 		
-		return "Test functions perfectly";
+		return env.getProperty("test.simple.msg");
 		
 	}
 	

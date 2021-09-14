@@ -6,8 +6,25 @@ package com.baleenn.domain.models;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.time.LocalDate;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Index;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,11 +35,17 @@ import lombok.NoArgsConstructor;
  *
  */
 @Entity
-@Table
+@Table (indexes = {
+		@Index(name = "nameIndex", columnList = "firstName, lastName"),
+		@Index(name = "fnameIndex", columnList = "firstName"),
+		@Index(name = "lnameIndex", columnList = "lastName")
+})
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 public class Client extends Audit<Long> {
+	
+
      @Id
      @SequenceGenerator(name = "client_sequence", sequenceName = "client_sequence",allocationSize = 1)
      @GeneratedValue(strategy = SEQUENCE, generator = "client_sequence")
@@ -44,19 +67,23 @@ public class Client extends Audit<Long> {
      @Column(nullable = true)
      private String anotherUsedName;
      
-     @Column(nullable = false)
-     private String fullAddress;
+ 	 @OneToMany(mappedBy = "client")
+ 	 private Set<Address> address;
      
      @Column(nullable = false, unique = true)
+ 	 @Pattern(regexp="${email.regex}" ,
+	             message="${email.invalid.msg}")
      private String emailAddress;
      
      @Column(nullable = false)
      private LocalDate dob;  
      
-     @Column(nullable = false)
-     private int professionId;
+     @ManyToOne(fetch = FetchType.EAGER, optional = true)
+     @JoinColumn(referencedColumnName = "id", unique=false, updatable = false, insertable = false, nullable = false, foreignKey = @ForeignKey(name="FK_client_profession"))
+     private Profession profession;
      
      @Column(nullable = false)
+     @Min(1) @Max(6)
      private int maritalCode;
      
      @Column(nullable = false)
@@ -64,10 +91,17 @@ public class Client extends Audit<Long> {
      
      @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
      @JoinColumn(referencedColumnName = "id", unique=true, updatable = true, insertable = true, 
-                 nullable=true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+                 nullable=true, foreignKey = @ForeignKey(name="FK_client_spouse_information"))
      private SpouseInformation spouseInformation;
      
+     @OneToMany(mappedBy="client")
+     private Set<FamilyInformation> familyInformation;
+     
+     @OneToMany(mappedBy="client")
+     private Set<Process> process;
+     
      @Column(nullable = false)
+     @Min(0) @Max(1)
      private int statusId;
      
      @Column(nullable = true)
@@ -116,7 +150,7 @@ public class Client extends Audit<Long> {
      private String cityLastEntry;
      
      @Column(nullable = true)
-     private String LivedInAnotherCountry;
+     private boolean LivedInAnotherCountry;
      
      @Column(nullable = true)
      private String countriesLivedIn;
