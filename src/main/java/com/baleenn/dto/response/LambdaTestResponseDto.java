@@ -10,17 +10,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class LambdaTestResponse {
+public class LambdaTestResponseDto {
 	
 	private String testVariableString;
-	private Integer TestVariableInt;
+	private Integer testVariableInt;
 	private Long testVariableLong;
 	private Boolean testVariableBool;
 
 	@Builder(builderMethodName = "lambdaTstBuilder")
-	public static LambdaTestResponse lambdaBuilder(String stringOfValues) {
-		String[] values = stringOfValues.split("|");
-		LambdaTestResponse lambda = new LambdaTestResponse();
+	public static LambdaTestResponseDto lambdaBuilder(String stringOfValues) {
+		String[] values = stringOfValues.split(";");
+		LambdaTestResponseDto lambda = new LambdaTestResponseDto();
+
 		lambda.setTestVariableBool(Boolean.valueOf(values[0]));
 		lambda.setTestVariableInt(Integer.valueOf(values[1]));
 		lambda.setTestVariableLong(Long.valueOf(values[2]));

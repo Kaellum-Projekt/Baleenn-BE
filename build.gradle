@@ -63,7 +63,7 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:2.4.4'
 }
 
-task buildZip(type: Zip) {
+task buildZip(type: Jar) {
     from compileJava
     from processResources
     into('lib') {
