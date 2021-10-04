@@ -8,6 +8,7 @@ import com.baleenn.domain.models.Client;
 import com.baleenn.domain.repositories.ClientRepository;
 import com.baleenn.dto.request.ClientRequestDto;
 import com.baleenn.dto.response.ClientResponseDto;
+import com.baleenn.lambda.LambdaTestHandler;
 import com.baleenn.service.ClientService;
 
 import lombok.Data;

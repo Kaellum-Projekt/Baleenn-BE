@@ -11,16 +11,16 @@ public class LambdaTestHandler implements RequestHandler<String, LambdaTestRespo
 	Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	@Override
 	public LambdaTestResponseDto handleRequest(String input, Context context) {
-		//"true;10;20L;TEST LAMBDA";
+		//"true;10;20;TEST LAMBDA";
 		LambdaLogger logger = context.getLogger();
 		
-		//logger.log("EVENT INPUT: " + gson.toJson(input));
-	    logger.log("EVENT TYPE INPUT: " + input.getClass().toString());
+		logger.log("EVENT INPUT: - 20210920" + gson.toJson(input));
+	    logger.log("EVENT TYPE INPUT - 20210920: " + input.getClass().toString());
 	    
 		LambdaTestResponseDto output = LambdaTestResponseDto.lambdaTstBuilder().stringOfValues(input).build();
 	    
-		logger.log("EVENT OUTPUT: " + gson.toJson(output));
-	    logger.log("EVENT TYPE OUTPUT: " + output.getClass().toString());
+		logger.log("EVENT OUTPUT - 20210920: " + gson.toJson(output));
+	    logger.log("EVENT TYPE OUTPUT - 20210920: " + output.getClass().toString());
 		
 	    return output;
 	}
