@@ -11,11 +11,11 @@ import com.baleenn.lambda.LambdaTestHandler;
 public class BaleennApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BaleennApplication.class, args);
-		
-		LambdaTestHandler test = new LambdaTestHandler();
-		
-		System.out.println(test.handleRequest("true;10;20;TEST LAMBDA", null));
+//		SpringApplication.run(BaleennApplication.class, args);
+//		
+//		LambdaTestHandler test = new LambdaTestHandler();
+//		
+//		System.out.println(test.handleRequest("true;10;20;TEST LAMBDA", null));
 	}
 
 }
